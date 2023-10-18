@@ -45,18 +45,7 @@ class WC_API extends WC_Legacy_API {
 	 * @return string|null
 	 */
 	public function get_rest_api_package_version() {
-		if ( ! $this->is_rest_api_loaded() ) {
-			return null;
-		}
-		if ( method_exists( \Automattic\WooCommerce\RestApi\Server::class, 'get_path' ) ) {
-			$path = \Automattic\WooCommerce\RestApi\Server::get_path();
-			if ( 0 === strpos( $path, __DIR__ ) ) {
-				// We are loading API from included version.
-				return WC()->version;
-			}
-		}
-		// We are loading API from external plugin.
-		return \Automattic\WooCommerce\RestApi\Package::get_version();
+        return get_option( 'woocommerce_version' );
 	}
 
 	/**
@@ -66,15 +55,7 @@ class WC_API extends WC_Legacy_API {
 	 * @return string
 	 */
 	public function get_rest_api_package_path() {
-		if ( ! $this->is_rest_api_loaded() ) {
-			return null;
-		}
-		if ( method_exists( \Automattic\WooCommerce\RestApi\Server::class, 'get_path' ) ) {
-			// We are loading API from included version.
-			return \Automattic\WooCommerce\RestApi\Server::get_path();
-		}
-		// We are loading API from external plugin.
-		return \Automattic\WooCommerce\RestApi\Package::get_path();
+        return dirname( __FILE__ );
 	}
 
 	/**
