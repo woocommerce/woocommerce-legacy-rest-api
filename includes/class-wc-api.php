@@ -29,13 +29,12 @@ class WC_API extends WC_Legacy_API {
 	public function init() {
 		parent::init();
 
-		//These two are still handled by WooCommerce core:
+		//These are still handled by WooCommerce core:
 		//add_action( 'init', array( $this, 'add_endpoint' ), 0 );
 		//add_filter( 'query_vars', array( $this, 'add_query_vars' ), 0 );
+		//add_action( 'rest_api_init', array( $this, 'register_wp_admin_settings' ) );
 
-        remove_action( 'parse_request', array(WC(), 'parse_legacy_api_request') );
 		add_action( 'parse_request', array( $this, 'handle_api_requests' ), 0 );
-		add_action( 'rest_api_init', array( $this, 'register_wp_admin_settings' ) );
 	}
 
 	/**
