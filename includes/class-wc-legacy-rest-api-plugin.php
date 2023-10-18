@@ -16,8 +16,8 @@ class WC_Legacy_REST_API_Plugin
      * Plugin initialization, to be invoked inside the woocommerce_init hook.
      */
     private static function init() {
-        include __DIR__ . '/legacy/class-wc-legacy-api.php';
-        include __DIR__ . '/class-wc-api.php';
+        require_once __DIR__ . '/legacy/class-wc-legacy-api.php';
+        require_once __DIR__ . '/class-wc-api.php';
 
         WC()->api = new WC_API();
         WC()->api->init();
@@ -50,8 +50,8 @@ class WC_Legacy_REST_API_Plugin
      */
     public static function on_plugin_activated() {
         if( ! self::legacy_api_still_in_woocommerce() ) {
-            include __DIR__ . '/legacy/class-wc-legacy-api.php';
-            include __DIR__ . '/class-wc-api.php';
+            require_once __DIR__ . '/legacy/class-wc-legacy-api.php';
+            require_once __DIR__ . '/class-wc-api.php';
 
             update_option( 'woocommerce_api_enabled', 'yes' );
             WC_API::add_endpoint();

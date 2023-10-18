@@ -23,5 +23,5 @@
 
 defined( 'ABSPATH' ) || exit;
 
-include __DIR__ . '/includes/class-wc-legacy-rest-api-plugin.php';
+require_once __DIR__ . '/includes/class-wc-legacy-rest-api-plugin.php';
 WC_Legacy_REST_API_Plugin::register_hook_handlers( __FILE__ );
