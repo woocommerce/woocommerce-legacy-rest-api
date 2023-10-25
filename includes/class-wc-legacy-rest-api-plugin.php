@@ -69,11 +69,11 @@ class WC_Legacy_REST_API_Plugin
     }
 
     /**
-     * Handler for the before_woocommerce_init hook, needed to declare HPOS compatibility.
+     * Handler for the before_woocommerce_init hook, needed to declare HPOS incompatibility.
      */
     public static function on_before_woocommerce_init() {
         if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', self::$plugin_filename, true );
+            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', self::$plugin_filename, false );
         }
     }
 

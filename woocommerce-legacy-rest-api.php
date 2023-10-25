@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: WooCommerce Legacy REST API
- * Plugin URI: https://woocommerce.com/
+ * Plugin URI: https://github.com/woocommerce/woocommerce-legacy-rest-api
  * Description: The legacy WooCommerce REST API, which used to be part of WooCommerce itself but is removed as of WooCommerce 9.0.
- * Version: 3.1.0
+ * Version: 1.0.0
  * Author: WooCommerce
  * Author URI: https://woocommerce.com
  * Text Domain: woocommerce
