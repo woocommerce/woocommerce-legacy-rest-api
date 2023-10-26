@@ -1,6 +1,6 @@
 === WooCommerce Legacy REST API ===
 Contributors: automattic, konamiman
-Tags: woo, woo commerce, rest api
+Tags: woo, woocommerce, rest api
 Requires at least: 6.2
 Tested up to: 6.3
 Requires PHP: 7.4
