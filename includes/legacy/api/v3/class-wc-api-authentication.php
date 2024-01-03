@@ -80,7 +80,7 @@ class WC_API_Authentication {
 			$keys = $this->get_keys_by_consumer_key( $params['consumer_key'] );
 
 			if ( ! $this->is_consumer_secret_valid( $keys['consumer_secret'], $params['consumer_secret'] ) ) {
-				throw new Exception( __( 'Consumer secret is invalid.', 'woocommerce' ), 401 );
+				throw new Exception( __( 'Consumer secret is invalid.', 'woocommerce-legacy-rest-api' ), 401 );
 			}
 
 			return $keys;
@@ -108,10 +108,10 @@ class WC_API_Authentication {
 	 * @since 2.4
 	 */
 	private function exit_with_unauthorized_headers() {
-		$auth_message = __( 'WooCommerce API. Use a consumer key in the username field and a consumer secret in the password field.', 'woocommerce' );
+		$auth_message = __( 'WooCommerce API. Use a consumer key in the username field and a consumer secret in the password field.', 'woocommerce-legacy-rest-api' );
 		header( 'WWW-Authenticate: Basic realm="' . $auth_message . '"' );
 		header( 'HTTP/1.0 401 Unauthorized' );
-		throw new Exception( __( 'Consumer Secret is invalid.', 'woocommerce' ), 401 );
+		throw new Exception( __( 'Consumer Secret is invalid.', 'woocommerce-legacy-rest-api' ), 401 );
 	}
 
 	/**
@@ -141,7 +141,7 @@ class WC_API_Authentication {
 		foreach ( $param_names as $param_name ) {
 
 			if ( empty( $params[ $param_name ] ) ) {
-				throw new Exception( sprintf( __( '%s parameter is missing', 'woocommerce' ), $param_name ), 404 );
+				throw new Exception( sprintf( __( '%s parameter is missing', 'woocommerce-legacy-rest-api' ), $param_name ), 404 );
 			}
 		}
 
@@ -176,7 +176,7 @@ class WC_API_Authentication {
 		", $consumer_key ), ARRAY_A );
 
 		if ( empty( $keys ) ) {
-			throw new Exception( __( 'Consumer key is invalid.', 'woocommerce' ), 401 );
+			throw new Exception( __( 'Consumer key is invalid.', 'woocommerce-legacy-rest-api' ), 401 );
 		}
 
 		return $keys;
@@ -196,7 +196,7 @@ class WC_API_Authentication {
 		$user = get_user_by( 'id', $user_id );
 
 		if ( ! $user ) {
-			throw new Exception( __( 'API user is invalid', 'woocommerce' ), 401 );
+			throw new Exception( __( 'API user is invalid', 'woocommerce-legacy-rest-api' ), 401 );
 		}
 
 		return $user;
@@ -240,7 +240,7 @@ class WC_API_Authentication {
 
 		// Sort parameters
 		if ( ! uksort( $params, 'strcmp' ) ) {
-			throw new Exception( __( 'Invalid signature - failed to sort parameters.', 'woocommerce' ), 401 );
+			throw new Exception( __( 'Invalid signature - failed to sort parameters.', 'woocommerce-legacy-rest-api' ), 401 );
 		}
 
 		// Normalize parameter key/values
@@ -260,7 +260,7 @@ class WC_API_Authentication {
 		$string_to_sign = $http_method . '&' . $base_request_uri . '&' . $query_string;
 
 		if ( 'HMAC-SHA1' !== $params['oauth_signature_method'] && 'HMAC-SHA256' !== $params['oauth_signature_method'] ) {
-			throw new Exception( __( 'Invalid signature - signature method is invalid.', 'woocommerce' ), 401 );
+			throw new Exception( __( 'Invalid signature - signature method is invalid.', 'woocommerce-legacy-rest-api' ), 401 );
 		}
 
 		$hash_algorithm = strtolower( str_replace( 'HMAC-', '', $params['oauth_signature_method'] ) );
@@ -269,7 +269,7 @@ class WC_API_Authentication {
 		$signature = base64_encode( hash_hmac( $hash_algorithm, $string_to_sign, $secret, true ) );
 
 		if ( ! hash_equals( $signature, $consumer_signature ) ) {
-			throw new Exception( __( 'Invalid signature - provided signature does not match.', 'woocommerce' ), 401 );
+			throw new Exception( __( 'Invalid signature - provided signature does not match.', 'woocommerce-legacy-rest-api' ), 401 );
 		}
 	}
 
@@ -334,7 +334,7 @@ class WC_API_Authentication {
 		$valid_window = 15 * 60; // 15 minute window
 
 		if ( ( $timestamp < time() - $valid_window ) || ( $timestamp > time() + $valid_window ) ) {
-			throw new Exception( __( 'Invalid timestamp.', 'woocommerce' ), 401 );
+			throw new Exception( __( 'Invalid timestamp.', 'woocommerce-legacy-rest-api' ), 401 );
 		}
 
 		$used_nonces = maybe_unserialize( $keys['nonces'] );
@@ -344,7 +344,7 @@ class WC_API_Authentication {
 		}
 
 		if ( in_array( $nonce, $used_nonces ) ) {
-			throw new Exception( __( 'Invalid nonce - nonce has already been used.', 'woocommerce' ), 401 );
+			throw new Exception( __( 'Invalid nonce - nonce has already been used.', 'woocommerce-legacy-rest-api' ), 401 );
 		}
 
 		$used_nonces[ $timestamp ] = $nonce;
@@ -379,7 +379,7 @@ class WC_API_Authentication {
 			case 'HEAD':
 			case 'GET':
 				if ( 'read' !== $key_permissions && 'read_write' !== $key_permissions ) {
-					throw new Exception( __( 'The API key provided does not have read permissions.', 'woocommerce' ), 401 );
+					throw new Exception( __( 'The API key provided does not have read permissions.', 'woocommerce-legacy-rest-api' ), 401 );
 				}
 				break;
 
@@ -388,7 +388,7 @@ class WC_API_Authentication {
 			case 'PATCH':
 			case 'DELETE':
 				if ( 'write' !== $key_permissions && 'read_write' !== $key_permissions ) {
-					throw new Exception( __( 'The API key provided does not have write permissions.', 'woocommerce' ), 401 );
+					throw new Exception( __( 'The API key provided does not have write permissions.', 'woocommerce-legacy-rest-api' ), 401 );
 				}
 				break;
 		}

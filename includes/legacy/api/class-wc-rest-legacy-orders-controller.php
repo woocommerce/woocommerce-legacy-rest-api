@@ -246,7 +246,7 @@ class WC_REST_Legacy_Orders_Controller extends WC_REST_CRUD_Controller {
 		try {
 			// Make sure customer exists.
 			if ( ! is_null( $request['customer_id'] ) && 0 !== $request['customer_id'] && false === get_user_by( 'id', $request['customer_id'] ) ) {
-				throw new WC_REST_Exception( 'woocommerce_rest_invalid_customer_id',__( 'Customer ID is invalid.', 'woocommerce' ), 400 );
+				throw new WC_REST_Exception( 'woocommerce_rest_invalid_customer_id',__( 'Customer ID is invalid.', 'woocommerce-legacy-rest-api' ), 400 );
 			}
 
 			// Make sure customer is part of blog.
