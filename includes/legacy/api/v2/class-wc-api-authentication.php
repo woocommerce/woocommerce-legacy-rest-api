@@ -85,7 +85,7 @@ class WC_API_Authentication {
 		} elseif ( ! empty( $params['consumer_key'] ) ) {
 
 			// Allow a query string parameter as a fallback
-			$consumer_key = $params['consumer_key'];
+			$consumer_key = sanitize_key( wp_unslash( $params['consumer_key'] ) );
 
 		} else {
 
@@ -101,7 +101,7 @@ class WC_API_Authentication {
 		} elseif ( ! empty( $params['consumer_secret'] ) ) {
 
 			// Allow a query string parameter as a fallback
-			$consumer_secret = $params['consumer_secret'];
+			$consumer_secret = sanitize_key( wp_unslash( $params['consumer_secret'] ) );
 
 		} else {
 
@@ -149,11 +149,11 @@ class WC_API_Authentication {
 		}
 
 		// Fetch WP user by consumer key
-		$keys = $this->get_keys_by_consumer_key( $params['oauth_consumer_key'] );
+		$keys = $this->get_keys_by_consumer_key( sanitize_key( wp_unslash( $params['oauth_consumer_key'] ) ) );
 
 		// Perform OAuth validation
 		$this->check_oauth_signature( $keys, $params );
-		$this->check_oauth_timestamp_and_nonce( $keys, $params['oauth_timestamp'], $params['oauth_nonce'] );
+		$this->check_oauth_timestamp_and_nonce( $keys, sanitize_key( wp_unslash( $params['oauth_timestamp'] ) ), sanitize_key( wp_unslash( $params['oauth_nonce'] ) ) );
 
 		// Authentication successful, return user
 		return $keys;

@@ -86,7 +86,7 @@ class WC_API_Authentication {
 		} elseif ( ! empty( $params['consumer_key'] ) ) {
 
 			// Allow a query string parameter as a fallback
-			$consumer_key = $params['consumer_key'];
+			$consumer_key = sanitize_key( wp_unslash( $params['consumer_key'] ) );
 
 		} else {
 
@@ -102,7 +102,7 @@ class WC_API_Authentication {
 		} elseif ( ! empty( $params['consumer_secret'] ) ) {
 
 			// Allow a query string parameter as a fallback
-			$consumer_secret = $params['consumer_secret'];
+			$consumer_secret = sanitize_key( wp_unslash( $params['consumer_secret'] ) );
 
 		} else {
 
