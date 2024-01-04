@@ -91,9 +91,9 @@ class WC_API_Authentication {
 			$this->exit_with_unauthorized_headers();
 		}
 
-		$keys = $this->get_keys_by_consumer_key( $_SERVER['PHP_AUTH_USER'] );
+		$keys = $this->get_keys_by_consumer_key( sanitize_key( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) ) );
 
-		if ( ! $this->is_consumer_secret_valid( $keys['consumer_secret'], $_SERVER['PHP_AUTH_PW'] ) ) {
+		if ( ! $this->is_consumer_secret_valid( $keys['consumer_secret'], sanitize_key( wp_unslash( $_SERVER['PHP_AUTH_PW'] ) ) ) ) {
 			$this->exit_with_unauthorized_headers();
 		}
 

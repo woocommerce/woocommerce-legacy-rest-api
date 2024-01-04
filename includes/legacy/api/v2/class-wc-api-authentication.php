@@ -80,7 +80,7 @@ class WC_API_Authentication {
 		if ( ! empty( $_SERVER['PHP_AUTH_USER'] ) ) {
 
 			// Should be in HTTP Auth header by default
-			$consumer_key = $_SERVER['PHP_AUTH_USER'];
+			$consumer_key = sanitize_key( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) );
 
 		} elseif ( ! empty( $params['consumer_key'] ) ) {
 
@@ -96,7 +96,7 @@ class WC_API_Authentication {
 		if ( ! empty( $_SERVER['PHP_AUTH_PW'] ) ) {
 
 			// Should be in HTTP Auth header by default
-			$consumer_secret = $_SERVER['PHP_AUTH_PW'];
+			$consumer_secret = sanitize_key( wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
 
 		} elseif ( ! empty( $params['consumer_secret'] ) ) {
 
