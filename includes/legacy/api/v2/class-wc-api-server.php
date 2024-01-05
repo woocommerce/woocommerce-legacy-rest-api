@@ -116,14 +116,14 @@ class WC_API_Server {
 
 		if ( empty( $path ) ) {
 			if ( isset( $_SERVER['PATH_INFO'] ) ) {
-				$path = $_SERVER['PATH_INFO'];
+				$path = preg_replace( '~[^a-zA-Z0-9_/-]~', '', $_SERVER['PATH_INFO'] );
 			} else {
 				$path = '/';
 			}
 		}
 
 		$this->path           = $path;
-		$this->method         = $_SERVER['REQUEST_METHOD'];
+		$this->method         = strtoupper( sanitize_key( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) );
 		$this->params['GET']  = $_GET;
 		$this->params['POST'] = $_POST;
 		$this->headers        = $this->get_headers( $_SERVER );
@@ -131,9 +131,9 @@ class WC_API_Server {
 
 		// Compatibility for clients that can't use PUT/PATCH/DELETE
 		if ( isset( $_GET['_method'] ) ) {
-			$this->method = strtoupper( $_GET['_method'] );
+			$this->method = strtoupper( sanitize_key( wp_unslash( $_GET['_method'] ) ) );
 		} elseif ( isset( $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] ) ) {
-			$this->method = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
+			$this->method = strtoupper( sanitize_key( wp_unslash( $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] ) ) );
 		}
 
 		// load response handler
