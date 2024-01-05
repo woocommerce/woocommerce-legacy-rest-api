@@ -144,7 +144,7 @@ class WC_API_Products extends WC_API_Resource {
 		}
 
 		if ( ! current_user_can( 'read_private_products' ) ) {
-			return new WP_Error( 'woocommerce_api_user_cannot_read_products_count', __( 'You do not have permission to read the products count', 'woocommerce' ), array( 'status' => 401 ) );
+			return new WP_Error( 'woocommerce_api_user_cannot_read_products_count', __( 'You do not have permission to read the products count', 'woocommerce-legacy-rest-api' ), array( 'status' => 401 ) );
 		}
 
 		$query = $this->query_products( $filter );
@@ -456,8 +456,8 @@ class WC_API_Products extends WC_API_Resource {
 				'created_at' => $this->server->format_datetime( time() ), // default to now
 				'updated_at' => $this->server->format_datetime( time() ),
 				'src'        => wc_placeholder_img_src(),
-				'title'      => __( 'Placeholder', 'woocommerce' ),
-				'alt'        => __( 'Placeholder', 'woocommerce' ),
+				'title'      => __( 'Placeholder', 'woocommerce-legacy-rest-api' ),
+				'alt'        => __( 'Placeholder', 'woocommerce-legacy-rest-api' ),
 				'position'   => 0,
 			);
 		}
