@@ -34,3 +34,9 @@ Note that since the Legacy REST API is not compatible with HPOS, once the plugin
 = 1.0.0 2023-11-01 =
 
 First version, replicates the WooCommerce Legacy REST API v3.1.0 present in WooCommerce 8.3.
+
+
+= 1.0.1 2024-01-08 =
+
+- Replace the text domain for human-readable strings from 'woocommerce' to 'woocommerce-legacy-rest-api'.
+- Add sanitization for data received via query string arguments and the $_SERVER array.
