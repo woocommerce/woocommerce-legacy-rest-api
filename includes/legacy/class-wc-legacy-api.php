@@ -83,11 +83,11 @@ class WC_Legacy_API {
 		global $wp;
 
 		if ( ! empty( $_GET['wc-api-version'] ) ) {
-			$wp->query_vars['wc-api-version'] = $_GET['wc-api-version'];
+			$wp->query_vars['wc-api-version'] = sanitize_key( wp_unslash( $_GET['wc-api-version'] ) );
 		}
 
 		if ( ! empty( $_GET['wc-api-route'] ) ) {
-			$wp->query_vars['wc-api-route'] = $_GET['wc-api-route'];
+			$wp->query_vars['wc-api-route'] = preg_replace( '~[^a-zA-Z0-9_/-]~', '', $_GET['wc-api-route'] );
 		}
 
 		// REST API request.
