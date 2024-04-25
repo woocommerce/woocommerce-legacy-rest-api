@@ -4,7 +4,7 @@ Tags: woo, woocommerce, rest api
 Requires at least: 6.2
 Tested up to: 6.3
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -40,3 +40,10 @@ First version, replicates the WooCommerce Legacy REST API v3.1.0 present in WooC
 
 - Replace the text domain for human-readable strings from 'woocommerce' to 'woocommerce-legacy-rest-api'.
 - Add sanitization for data received via query string arguments and the $_SERVER array.
+
+
+= 1.0.2 2024-05-01
+
+Add a dismissable admin notice indicating that the Legacy REST API is not compatible with HPOS.
+The notice will appear if the orders table is (or has been) selected as the orders data store in the WooCommerce features settings page,
+and will disappear when that ceases to be true. Once the notice is dismissed it will never appear again.
