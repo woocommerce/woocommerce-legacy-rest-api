@@ -74,7 +74,7 @@ class WC_Legacy_REST_API_Plugin
      * @returns bool True if the notice has been added, false otherwise.
      */
     private static function maybe_add_hpos_incompatibility_admin_notice() {
-        if( 'yes' !== get_option( 'woocommerce_custom_orders_table_enabled' ) || self::user_has_dismissed_admin_notice( 'legacy_rest_api_is_incompatible_with_hpos' ) ) {
+        if( ! self::hpos_is_enabled() || self::user_has_dismissed_admin_notice( 'legacy_rest_api_is_incompatible_with_hpos' ) ) {
             return false;
         }
     
@@ -95,10 +95,19 @@ class WC_Legacy_REST_API_Plugin
     }
 
     /**
+     * Check if HPOS is currently in use.
+     * 
+     * @returns bool True if HPOS is currently in use.
+     */
+    private function hpos_is_enabled(): bool {
+        return class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) && \Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled();
+    }
+
+    /**
      * Remove the "legacy REST API and HPOS are incompatible" admin notice if needed.
      */
     private static function maybe_remove_hpos_incompatibility_admin_notice() {
-        if ( WC_Admin_Notices::has_notice( 'legacy_rest_api_is_incompatible_with_hpos' ) && 'yes' !== get_option( 'woocommerce_custom_orders_table_enabled' ) ) {
+        if ( WC_Admin_Notices::has_notice( 'legacy_rest_api_is_incompatible_with_hpos' ) && ! self::hpos_is_enabled() ) {
             self::remove_notice( 'legacy_rest_api_is_incompatible_with_hpos' );
         }
     }
