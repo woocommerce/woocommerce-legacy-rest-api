@@ -99,7 +99,7 @@ class WC_Legacy_REST_API_Plugin
      * 
      * @returns bool True if HPOS is currently in use.
      */
-    private function hpos_is_enabled(): bool {
+    private static function hpos_is_enabled(): bool {
         return class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) && \Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled();
     }
 
