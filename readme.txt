@@ -47,3 +47,8 @@ First version, replicates the WooCommerce Legacy REST API v3.1.0 present in WooC
 Add a dismissable admin notice indicating that the Legacy REST API is not compatible with HPOS.
 The notice will appear if the orders table is (or has been) selected as the orders data store in the WooCommerce features settings page,
 and will disappear when that ceases to be true. Once the notice is dismissed it will never appear again.
+
+
+= 1.0.3 2024-05-15
+
+Fix a bug introduced in 1.0.2 that caused a fatal error when checking if HPOS is enabled.
