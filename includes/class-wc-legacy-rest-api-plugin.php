@@ -15,13 +15,19 @@ class WC_Legacy_REST_API_Plugin
     /**
      * Plugin initialization, to be invoked inside the woocommerce_init hook.
      */
-    private static function init() {
-        require_once __DIR__ . '/legacy/class-wc-legacy-api.php';
-        require_once __DIR__ . '/class-wc-api.php';
+    public static function on_woocommerce_init() {
+        if( ! self::legacy_api_still_in_woocommerce() ) {
+            require_once __DIR__ . '/legacy/class-wc-legacy-api.php';
+            require_once __DIR__ . '/class-wc-api.php';
 
-        WC()->api = new WC_API();
-        WC()->api->init();
-        WC()->api->add_endpoint();
+            WC()->api = new WC_API();
+            WC()->api->init();
+            WC()->api->add_endpoint();
+        }
+
+        if( ! self::maybe_add_hpos_incompatibility_admin_notice() ) {
+            self::maybe_remove_hpos_incompatibility_admin_notice();
+        }
     }
 
     /**
@@ -49,6 +55,10 @@ class WC_Legacy_REST_API_Plugin
      * Act on plugin activation.
      */
     public static function on_plugin_activated() {
+        if( ! self::woocommerce_is_active() ) {
+            return;
+        }
+        
         if( ! self::legacy_api_still_in_woocommerce() ) {
             require_once __DIR__ . '/legacy/class-wc-legacy-api.php';
             require_once __DIR__ . '/class-wc-api.php';
@@ -59,12 +69,64 @@ class WC_Legacy_REST_API_Plugin
     }
 
     /**
+     * Add the "legacy REST API and HPOS are incompatible" admin notice if needed.
+     * 
+     * @returns bool True if the notice has been added, false otherwise.
+     */
+    private static function maybe_add_hpos_incompatibility_admin_notice() {
+        if( ! self::hpos_is_enabled() || self::user_has_dismissed_admin_notice( 'legacy_rest_api_is_incompatible_with_hpos' ) ) {
+            return false;
+        }
+    
+        if ( ! WC_Admin_Notices::has_notice( 'legacy_rest_api_is_incompatible_with_hpos' ) ) {
+            $features_page_url = admin_url( 'admin.php?page=wc-settings&tab=advanced&section=features' );
+            WC_Admin_Notices::add_custom_notice(
+                'legacy_rest_api_is_incompatible_with_hpos',
+                sprintf(
+                    wpautop( __( '⚠ <b>The Legacy REST API plugin and HPOS are both active on this site.</b><br/><br/>Please be aware that the WooCommerce Legacy REST API is <b>not</b> compatible with HPOS. <a target="_blank" href="%s">Manage features</a>', 'woocommerce-legacy-rest-api' ) ),
+                    $features_page_url
+                )
+            );
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if HPOS is currently in use.
+     * 
+     * @returns bool True if HPOS is currently in use.
+     */
+    private function hpos_is_enabled(): bool {
+        return class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) && \Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled();
+    }
+
+    /**
+     * Remove the "legacy REST API and HPOS are incompatible" admin notice if needed.
+     */
+    private static function maybe_remove_hpos_incompatibility_admin_notice() {
+        if ( WC_Admin_Notices::has_notice( 'legacy_rest_api_is_incompatible_with_hpos' ) && ! self::hpos_is_enabled() ) {
+            self::remove_notice( 'legacy_rest_api_is_incompatible_with_hpos' );
+        }
+    }
+
+    /**
      * Act on plugin deactivation/uninstall.
      */
     public static function on_plugin_deactivated() {
+        if( ! self::woocommerce_is_active() ) {
+            return;
+        }
+
         if( ! self::legacy_api_still_in_woocommerce() ) {
             update_option( 'woocommerce_api_enabled', 'no' );
             flush_rewrite_rules();
+        }
+
+        if ( WC_Admin_Notices::has_notice( 'legacy_rest_api_is_incompatible_with_hpos' ) ) {
+            self::remove_notice( 'legacy_rest_api_is_incompatible_with_hpos' );
         }
     }
 
@@ -74,15 +136,6 @@ class WC_Legacy_REST_API_Plugin
     public static function on_before_woocommerce_init() {
         if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
             \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', self::$plugin_filename, false );
-        }
-    }
-
-     /**
-     * Handler for the before_woocommerce_init hook, needed to initialize the plugin.
-     */
-    public static function on_woocommerce_init() {
-        if( ! self::legacy_api_still_in_woocommerce() ) {
-            self::init();
         }
     }
 
@@ -100,5 +153,21 @@ class WC_Legacy_REST_API_Plugin
         $plugin_relative_path = str_replace( WP_PLUGIN_DIR . '/', '', self::$plugin_filename );
         $all_plugins[ $plugin_relative_path ][ 'Description' ] = 'The legacy WooCommerce REST API, which is now part of WooCommerce itself but will be removed in WooCommerce 9.0.';
         return $all_plugins;
+    }
+
+    /**
+     * Check if WooCommerce itself is active in the site.
+     */
+    private static function woocommerce_is_active() {
+        return class_exists( 'WooCommerce' );
+    }
+
+    /**
+     * Check if the current user has dismissed an admin notice.
+     * 
+     * @param string $notice_id Id of the notice.
+     */
+    private static function user_has_dismissed_admin_notice( $notice_id ) {
+        return '' !== get_user_meta( get_current_user_id(), "dismissed_${notice_id}_notice", true );
     }
 }
