@@ -49,6 +49,6 @@ First version, replicates the WooCommerce Legacy REST API v3.1.0 present in WooC
 
 - Fix a bug introduced in 1.0.2 that caused a fatal error when checking if HPOS is enabled.
 
-= 1.0.4 TBD =
+= 1.0.4 2024-05-16 =
 
 - Correct a problem in which the attempted removal of admin notices (warning of HPOS incompatibility) could lead to a fatal error during plugin deactivation.
