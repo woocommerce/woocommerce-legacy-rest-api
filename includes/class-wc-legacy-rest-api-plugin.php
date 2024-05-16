@@ -168,6 +168,10 @@ class WC_Legacy_REST_API_Plugin
      * @param string $notice_id Id of the notice.
      */
     private static function user_has_dismissed_admin_notice( $notice_id ) {
-        return '' !== get_user_meta( get_current_user_id(), "dismissed_${notice_id}_notice", true );
+        if ( method_exists( 'WC_Admin_Notices', 'user_has_dismissed_notice' ) ) {
+            return WC_Admin_Notices::user_has_dismissed_notice( $notice_id );
+        } else {
+            return (bool) get_user_meta( get_current_user_id(), "dismissed_{$notice_id}_notice", true );
+        }
     }
 }
