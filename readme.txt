@@ -4,7 +4,7 @@ Tags: woo, woocommerce, rest api
 Requires at least: 6.2
 Tested up to: 6.3
 Requires PHP: 7.4
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
