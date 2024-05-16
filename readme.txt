@@ -52,3 +52,7 @@ and will disappear when that ceases to be true. Once the notice is dismissed it 
 = 1.0.3 2024-05-15
 
 Fix a bug introduced in 1.0.2 that caused a fatal error when checking if HPOS is enabled.
+
+= 1.0.4 TBD =
+
+- Correct a problem in which the attempted removal of admin notices (warning of HPOS incompatibility) could lead to a fatal error during plugin deactivation.
