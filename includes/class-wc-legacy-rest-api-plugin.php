@@ -108,7 +108,7 @@ class WC_Legacy_REST_API_Plugin
      */
     private static function maybe_remove_hpos_incompatibility_admin_notice() {
         if ( WC_Admin_Notices::has_notice( 'legacy_rest_api_is_incompatible_with_hpos' ) && ! self::hpos_is_enabled() ) {
-            self::remove_notice( 'legacy_rest_api_is_incompatible_with_hpos' );
+            WC_Admin_Notices::remove_notice( 'legacy_rest_api_is_incompatible_with_hpos' );
         }
     }
 
@@ -126,7 +126,7 @@ class WC_Legacy_REST_API_Plugin
         }
 
         if ( WC_Admin_Notices::has_notice( 'legacy_rest_api_is_incompatible_with_hpos' ) ) {
-            self::remove_notice( 'legacy_rest_api_is_incompatible_with_hpos' );
+            WC_Admin_Notices::remove_notice( 'legacy_rest_api_is_incompatible_with_hpos' );
         }
     }
 
