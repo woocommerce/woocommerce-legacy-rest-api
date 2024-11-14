@@ -502,7 +502,7 @@ class WC_API_Orders extends WC_API_Resource {
 			wc_delete_shop_order_transients( $order );
 
 			do_action( 'woocommerce_api_create_order', $order->get_id(), $data, $this );
-			do_action( 'woocommerce_new_order', $order->get_id() );
+			do_action( 'woocommerce_new_order', $order->get_id(), $order );
 
 			return $this->get_order( $order->get_id() );
 		} catch ( WC_Data_Exception $e ) {
