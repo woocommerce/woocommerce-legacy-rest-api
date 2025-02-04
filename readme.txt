@@ -31,28 +31,28 @@ Note that since the Legacy REST API is not compatible with HPOS, once the plugin
 
 == Changelog ==
 
-= 1.0.0 2023-11-01 =
+= 1.0.5 2025-01-20 =
 
-First version, replicates the WooCommerce Legacy REST API v3.1.0 present in WooCommerce 8.3.
+- Fix the usage of woocommerce_new_order action hook to avoid a fatal errors.
 
-= 1.0.1 2024-01-08 =
+= 1.0.4 2024-05-16 =
 
-- Replace the text domain for human-readable strings from 'woocommerce' to 'woocommerce-legacy-rest-api'.
-- Add sanitization for data received via query string arguments and the $_SERVER array.
+- Correct a problem in which the attempted removal of admin notices (warning of HPOS incompatibility) could lead to a fatal error during plugin deactivation.
+
+= 1.0.3 2024-05-15 =
+
+- Fix a bug introduced in 1.0.2 that caused a fatal error when checking if HPOS is enabled.
 
 = 1.0.2 2024-05-01 =
 
 - Add a dismissable admin notice indicating that the Legacy REST API is not compatible with HPOS.
 - The notice will appear if the orders table is (or has been) selected as the orders data store in the WooCommerce features settings page, and will disappear when that ceases to be true. Once the notice is dismissed it will never appear again.
 
-= 1.0.3 2024-05-15 =
+= 1.0.1 2024-01-08 =
 
-- Fix a bug introduced in 1.0.2 that caused a fatal error when checking if HPOS is enabled.
+- Replace the text domain for human-readable strings from 'woocommerce' to 'woocommerce-legacy-rest-api'.
+- Add sanitization for data received via query string arguments and the $_SERVER array.
 
-= 1.0.4 2024-05-16 =
+= 1.0.0 2023-11-01 =
 
-- Correct a problem in which the attempted removal of admin notices (warning of HPOS incompatibility) could lead to a fatal error during plugin deactivation.
-
-= 1.0.5 xxxx-xx-xx =
-
-- Fix the usage of woocommerce_new_order action hook to avoid a fatal errors.
+First version, replicates the WooCommerce Legacy REST API v3.1.0 present in WooCommerce 8.3.
