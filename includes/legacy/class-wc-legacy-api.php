@@ -305,7 +305,6 @@ class WC_Legacy_API {
 	 * @param WC_API_Server $server the REST server.
 	 */
 	private function boot_api_classes( $api_classes, $server ) {
-
 		foreach ( $api_classes as $api_class ) {
 			$this->api_classes[ $api_class ] = new $api_class( $server );
 		}
