@@ -43,6 +43,14 @@ class WC_Legacy_API {
 	public $authentication;
 
 	/**
+	 * REST API classes array.
+	 *
+	 * @deprecated 2.6.0
+	 * @var array
+	 */
+	private $api_classes = [];
+
+	/**
 	 * Init the legacy API.
 	 */
 	public function init() {
@@ -169,9 +177,7 @@ class WC_Legacy_API {
 			)
 		);
 
-		foreach ( $api_classes as $api_class ) {
-			$this->$api_class = new $api_class( $server );
-		}
+		$this->boot_api_classes( $api_classes, $server );
 	}
 
 
@@ -215,9 +221,7 @@ class WC_Legacy_API {
 			)
 		);
 
-		foreach ( $api_classes as $api_class ) {
-			$this->$api_class = new $api_class( $this->server );
-		}
+		$this->boot_api_classes( $api_classes, $this->server );
 
 		// Fire off the request.
 		$this->server->serve_request();
@@ -263,9 +267,7 @@ class WC_Legacy_API {
 			)
 		);
 
-		foreach ( $api_classes as $api_class ) {
-			$this->$api_class = new $api_class( $this->server );
-		}
+		$this->boot_api_classes( $api_classes, $this->server );
 
 		// Fire off the request.
 		$this->server->serve_request();
@@ -294,5 +296,18 @@ class WC_Legacy_API {
 	public function register_rest_routes() {
 		wc_deprecated_function( 'WC_Legacy_API::register_rest_routes', '3.7.0', '' );
 		$this->register_wp_admin_settings();
+	}
+
+	/**
+	 * Boot api classes
+	 *
+	 * @param array $api_classes the api classes.
+	 * @param WC_API_Server $server the REST server.
+	 */
+	private function boot_api_classes( $api_classes, $server ) {
+
+		foreach ( $api_classes as $api_class ) {
+			$this->api_classes[ $api_class ] = new $api_class( $server );
+		}
 	}
 }
