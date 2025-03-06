@@ -120,11 +120,11 @@ class WC_API_Customers extends WC_API_Resource {
 				continue;
 			}
 
-            $customer = $this->get_customer( $user_id, $fields );
+			$customer = $this->get_customer( $user_id, $fields );
 
-            if ( is_wp_error( $customer ) ) {
-                continue;
-            }
+			if ( is_wp_error( $customer ) ) {
+				continue;
+			}
 
 			$customers[] = array_key_first( $customer );
 		}
@@ -677,11 +677,11 @@ class WC_API_Customers extends WC_API_Resource {
 			);
 
 		} else {
-            $customer = $this->get_customer( $order->get_user_id() );
+			$customer = $this->get_customer( $order->get_user_id() );
 
-            if ( is_wp_error( $customer ) ) {
-                return $order_data;
-            }
+			if ( is_wp_error( $customer ) ) {
+				return $order_data;
+			}
 
 			$order_data['customer'] = array_key_first( $customer );
 		}
