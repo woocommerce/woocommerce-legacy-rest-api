@@ -120,7 +120,13 @@ class WC_API_Customers extends WC_API_Resource {
 				continue;
 			}
 
-			$customers[] = current( $this->get_customer( $user_id, $fields ) );
+            $customer = $this->get_customer( $user_id, $fields );
+
+            if ( is_wp_error( $customer ) ) {
+                continue;
+            }
+
+			$customers[] = array_key_first( $customer );
 		}
 
 		$this->server->add_pagination_headers( $query );
@@ -495,7 +501,7 @@ class WC_API_Customers extends WC_API_Resource {
 		$orders = array();
 
 		foreach ( $order_ids as $order_id ) {
-			$orders[] = current( WC()->api->WC_API_Orders->get_order( $order_id, $fields ) );
+			$orders[] = array_key_first( WC()->api->WC_API_Orders->get_order( $order_id, $fields ) );
 		}
 
 		return array( 'orders' => apply_filters( 'woocommerce_api_customer_orders_response', $orders, $id, $fields, $order_ids, $this->server ) );
@@ -671,8 +677,13 @@ class WC_API_Customers extends WC_API_Resource {
 			);
 
 		} else {
+            $customer = $this->get_customer( $order->get_user_id() );
 
-			$order_data['customer'] = current( $this->get_customer( $order->get_user_id() ) );
+            if ( is_wp_error( $customer ) ) {
+                return $order_data;
+            }
+
+			$order_data['customer'] = array_key_first( $customer );
 		}
 
 		return $order_data;
