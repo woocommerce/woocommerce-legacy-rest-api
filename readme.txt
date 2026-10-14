@@ -4,7 +4,7 @@ Tags: woo, woocommerce, rest api
 Requires at least: 6.2
 Tested up to: 9.5
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -53,6 +53,10 @@ First version, replicates the WooCommerce Legacy REST API v3.1.0 present in WooC
 
 - Correct a problem in which the attempted removal of admin notices (warning of HPOS incompatibility) could lead to a fatal error during plugin deactivation.
 
-= 1.0.5 xxxx-xx-xx =
+= 1.0.5 2025-01-20 =
 
 - Fix the usage of woocommerce_new_order action hook to avoid a fatal errors.
+
+= 1.0.6 2026-10-14 =
+
+- Update nonce handling for API key authentication.
