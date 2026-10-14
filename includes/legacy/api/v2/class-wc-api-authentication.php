@@ -332,19 +332,26 @@ class WC_API_Authentication {
 
 		$used_nonces = maybe_unserialize( $keys['nonces'] );
 
-		if ( empty( $used_nonces ) ) {
+		if ( empty( $used_nonces ) || ! is_array( $used_nonces ) ) {
 			$used_nonces = array();
 		}
 
-		if ( in_array( $nonce, $used_nonces ) ) {
-			throw new Exception( __( 'Invalid nonce - nonce has already been used.', 'woocommerce-legacy-rest-api' ), 401 );
+		foreach ( $used_nonces as $timestamp_nonces ) {
+			if ( in_array( $nonce, (array) $timestamp_nonces, true ) ) {
+				throw new Exception( __( 'Invalid nonce - nonce has already been used.', 'woocommerce-legacy-rest-api' ), 401 );
+			}
 		}
 
-		$used_nonces[ $timestamp ] = $nonce;
+		if ( isset( $used_nonces[ $timestamp ] ) ) {
+			$used_nonces[ $timestamp ]   = (array) $used_nonces[ $timestamp ];
+			$used_nonces[ $timestamp ][] = $nonce;
+		} else {
+			$used_nonces[ $timestamp ] = $nonce;
+		}
 
 		// Remove expired nonces
-		foreach ( $used_nonces as $nonce_timestamp => $nonce ) {
-			if ( $nonce_timestamp < ( time() - $valid_window ) ) {
+		foreach ( array_keys( $used_nonces ) as $nonce_timestamp ) {
+			if ( ! is_numeric( $nonce_timestamp ) || $nonce_timestamp < ( time() - $valid_window ) ) {
 				unset( $used_nonces[ $nonce_timestamp ] );
 			}
 		}
